@@ -1,0 +1,29 @@
+version: v1.0
+name: "\U0001F680 Go Project CI/CD Pipeline"
+agent:
+  machine:
+    type: f1-standard-2
+    os_image: ubuntu2404
+fail_fast:
+  stop:
+    when: branch != 'main'
+auto_cancel:
+  running:
+    when: branch != 'main'
+  queued:
+    when: branch != 'main'
+blocks:
+  - name: Go
+    task:
+      jobs:
+        - name: Full Thing
+          commands:
+            - export GO111MODULE=on
+            - export GOPATH=~/go
+            - 'export PATH=/home/semaphore/go/bin:$PATH'
+            - checkout
+            - cache restore
+            - go mod vendor
+            - go test ./...
+            - go build -v -o go-gin-app
+            - artifact push project --force go-gin-app
