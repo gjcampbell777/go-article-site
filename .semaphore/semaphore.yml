@@ -2,8 +2,8 @@ version: v1.0
 name: "\U0001F680 Go Project CI/CD Pipeline"
 agent:
   machine:
-    type: a2-standard-4
-    os_image: macos-xcode16
+    type: f1-standard-2
+    os_image: ubuntu2404
 fail_fast:
   stop:
     when: branch != 'main'
@@ -12,12 +12,6 @@ auto_cancel:
     when: branch != 'main'
   queued:
     when: branch != 'main'
-global_job_config:
-  prologue:
-    commands:
-      - checkout
-      - sem-version go 1.22
-      - cache restore
 blocks:
   - name: Install Dependencies
     task:
